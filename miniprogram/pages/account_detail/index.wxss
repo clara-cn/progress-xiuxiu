@@ -1,0 +1,44 @@
+.avatar-wrapper {
+  background-color: transparent; /* Remove the default background effect */
+  border: none; /* Ensure there's no border */
+}
+
+.avatar-wrapper:active {
+  background-color: transparent; /* Remove any background color on active state */
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid gray;
+  transition: filter 0.2s; /* Smooth effect when changing color */
+}
+
+.avatar:active {
+  filter: brightness(0.8);
+}
+
+.mp-cells {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.mp-cell {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.mp-cell__title {
+  flex: 0 0 100px;
+  color: #333;
+  font-size: 16px;
+}
+
+.weui-input {
+  flex: 1;
+  padding: 5px;
+  font-size: 16px;
+}

@@ -1,0 +1,99 @@
+<view class="container">
+  <view class="form-group">
+    <view class="form-cell">
+      <view class="form-cell_title">项目名称</view>
+      <input class="form-cell_input" placeholder="请输入项目名称" placeholder-class="form-cell_title-placeholder"
+        bindinput="onTitleInput" value="{{title}}" />
+    </view>
+    <view class="form-cell">
+      <view class="form-cell_title">详细描述</view>
+      <input class="form-cell_input" placeholder="请输入详细描述（100字以内）" placeholder-class="form-cell_title-placeholder"
+        bindinput="onDescInput" value="{{desc}}" />
+    </view>
+  </view>
+  <!-- <view class="form-group">
+    <view class="form-cell inline">
+      <view>添加附件</view>
+      <view class="upload-text" bindtap="addFile">
+        {{(files.length === 0 ? "点击添加附件" : fileName)}}
+      </view>
+      <image class="upload" bindtap="addFile" src="../../images/add/next.png"></image>
+    </view>
+  </view> -->
+  <view class="form-group">
+    <!-- <view class="form-cell inline">
+      <view>列表选择</view>
+      <view class="option">默认</view>
+    </view> -->
+
+    <view class="form-cell inline">
+      <view class="form-cell_title">截止日期</view>
+      <picker class="option" mode="date" bindchange="onDeadlineChange">
+        {{deadline || "请选择日期"}}
+      </picker>
+    </view>
+
+    <view class="form-cell">
+      <view>项目进度： {{progress}}%</view>
+      <slider 
+        class="slider"
+        min="0" 
+        max="100" 
+        step="1" 
+        value="{{progress}}" 
+        bindchange="onProgressChange" 
+        block-color="#007AFF" 
+        block-size="16"
+        background-color="#EFEFEF" 
+        active-color="#007AFF" />
+    </view>
+
+    <view class="form-cell">
+      <view class="dropdown-container">
+        <!-- Dropdown Header -->
+        <view class="dropdown-header" bindtap="toggleDropdown">
+        {{staffNames}}
+          <text>{{staffNames.length > 0 ? staffNames.join(', ') : '请选择工作人员'}}</text>
+          <!-- <image class="dropdown-icon" src="../../images/add/arrow-down.png" /> -->
+        </view>
+
+        <!-- Dropdown Options -->
+        <view wx:if="{{dropdownOpen}}" class="dropdown-options">
+          <checkbox-group bindchange="onChooseStaff" value="{{staffIds}}">
+            <block wx:for="{{users}}" wx:key="_id">
+              <label class="checkbox-label">
+                <checkbox value="{{item._id}}" /> 
+                {{item.real_name}}
+              </label>
+            </block>
+          </checkbox-group>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-cell inline">
+      <view>负责人</view>
+      <picker class="option" bindchange="onChooseLeader" range="{{realNames}}" value="{{leader}}">
+        {{realNames[leader]}}
+      </picker>
+      <picker class="selector" bindchange="onChooseLeader" range="{{realNames}}" value="{{leader}}">
+        <image class="selector" src="../../images/add/next.png" />
+      </picker>
+    </view>
+
+    <view class="form-cell inline">
+      <view>事件状态</view>
+      <picker class="option" bindchange="onChooseFreq" range="{{freqOptions}}">
+        {{freqOptions[freq]}}
+      </picker>
+      <picker class="selector" bindchange="onChooseFreq" range="{{freqOptions}}">
+        <image class="selector" src="../../images/add/next.png" />
+      </picker>
+    </view>
+  </view>
+  <view class="delete" bindtap="deleteTodo">删除待办</view>
+  <view class="footer">
+    <view class="cancel" bindtap="cancelEdit">取消</view>
+    <view class="save" bindtap="saveTodo">保存</view>
+  </view>
+</view>

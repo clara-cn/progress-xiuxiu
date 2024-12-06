@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/list/index",
+    "pages/add/index",
+    "pages/file/index",
+    "pages/edit/index",
+    "pages/detail/index",
+    "pages/account/index",
+    "pages/account_detail/index"
+  ],
+  "tabBar": {
+    "color": "#00000",
+    "selectedColor": "#3cc51f",
+    "backgroundColor": "#fffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/list/index",
+        "text": "项目列表",
+        "iconPath": "images/tabbar/list-icon.png",
+        "selectedIconPath": "images/tabbar/list-icon.png"
+      },
+      {
+        "pagePath": "pages/account/index",
+        "text": "我的账号",
+        "iconPath": "images/tabbar/user-icon.png",
+        "selectedIconPath": "images/tabbar/user-icon.png"
+      }
+    ]
+  },
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "进度咻咻",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

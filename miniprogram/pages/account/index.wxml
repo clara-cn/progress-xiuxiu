@@ -1,0 +1,18 @@
+<view class="container">
+  <view class="user_container" wx:if="{{hasUserInfo}}" >
+    <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+      <image class="avatar" src="{{avatarUrl}}" mode="cover"></image>
+    </button>
+    <view>
+      <text class="nickname">{{realName}}</text>
+      <image class="edit-icon" src="../../images/account/edit.png" bindtap="showEditModal" />
+    </view>
+  </view>
+
+  <view wx:else>
+    <button class="get-userinfo-btn" bindtap="getUserProfile">获取用户信息</button>
+  </view>
+  <view class="number_conclusion">
+
+  </view>
+</view>

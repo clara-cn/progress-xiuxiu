@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="form-group">
+    <view class="form-cell-detail">
+      <view class="form-cell_title">{{todo.title}}</view>
+      <view class="form-cell_desc">{{todo.desc}}</view>
+      <view style="font-size: small;margin-top: 10px;">截止日期 - {{todo.deadline}}</view>
+    </view>
+    <view class="form-cell-detail">
+      <view>负责人 {{todo.leaderName}}</view>
+      <view>工作人员 {{todo.staffNames}} </view>
+    </view>
+    <view class="form-cell-detail">
+      <view>待做清单</view>
+      <checkbox-group class="todo-list">
+        <view class="todo-item" wx:for="{{tasks}}" wx:key="index">
+          <checkbox
+            class="todo-checkbox"
+            data-index="{{index}}"
+            checked="{{item.done}}"
+            bindtap="toggleTodo"
+          >
+            <text class="{{item.done ? 'completed' : ''}}">{{item.name}}</text>
+          </checkbox>
+        </view>
+      </checkbox-group>
+      <button class="sub-todo-btn" bindtap="addTask">+ 添加清单</button>
+    </view>
+  </view>
+  <view class="footer">
+    <view class="edit" bindtap="toEditPage">编辑待办</view>
+  </view>
+</view>

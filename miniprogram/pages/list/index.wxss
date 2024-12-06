@@ -1,0 +1,143 @@
+/* miniprogram/pages/list/index.wxss */
+
+.user_info_getter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.get-userinfo-btn {
+  padding: 10px 20px;
+  background-color: #497ca7;
+  color: white;
+  border-radius: 5px;
+}
+
+.container.empty {
+  background: white;
+}
+
+.container:last-child {
+  margin-bottom: calc( var(--footer-height) + 24px );
+}
+
+.background {
+  width: 80vw;
+  margin-top: 12vh;
+}
+
+.title {
+  margin-top: 48px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.subtitle {
+  margin-top: 9px;
+  font-size: 14px;
+}
+
+.form-cell {
+  padding: 0;
+}
+
+.form-group {
+  background-color: transparent;
+  border: none;
+}
+
+.slide {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  position: relative;
+  border-radius: 13px;
+  margin-bottom: 5px;
+}
+
+.checkbox {
+  width: 22px;
+  height: 20px;
+  border-radius: 12px;
+  align-self: center;
+}
+
+.item-info-container {
+  display: flex;
+  flex-direction: column;
+}
+.item-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.deadline-icon {
+  width: 12px;
+  height: 12px;
+  margin-right: 2px;
+}
+
+.days-left {
+  font-size: 11px;
+  width: 70px;
+}
+
+.project-info {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.todo-info {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.todo-info_title {
+  font-size: 16px;
+  width: 100%;
+  display: -webkit-box;             /* Set display to a flexible box */
+  -webkit-box-orient: vertical;     /* Set box orientation to vertical */
+  -webkit-line-clamp: 1;            /* Limit text to 2 lines */
+  overflow: hidden;                 /* Hide overflow */
+  text-overflow: ellipsis;          /* Add ellipsis (...) for overflow */
+  word-break: break-word;           /* Allow breaking long words */
+  white-space: normal;              /* Allow text wrapping */
+}
+
+.todo-info_desc {
+  font-size: 14px;
+  color: #BDBDBD;
+}
+
+.star {
+  width: 25px;
+  height: 36px;
+  position: absolute;
+  right: 42px;
+  top: 0;
+}
+
+.starBtn .weui-slideview__btn {
+  background-color: gold;
+}
+
+.file {
+  width: 25px;
+  height: 25px;
+  margin-left: auto;
+  margin-right: 22px;
+}
+
+.todo-info_title.done {
+  text-decoration: line-through;
+  color: #8D8D8D;
+}
