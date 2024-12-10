@@ -1,0 +1,12 @@
+<view class="container">
+  <image class="logo_icon" src="../../images/logo.png" />
+  <text>进度咻咻，欢迎您</text>
+
+  <checkbox-group class="checkbox_container" bindchange="onCheckboxChange">
+    <checkbox class="checkbox_container" value="agree">
+      登录需同意<span bindtap="showPrivacyPolicy">《隐私协议》</span>、<span bindtap="showUserAgreement">《用户协议》</span>
+    </checkbox>
+  </checkbox-group>
+
+  <button class="get-userinfo-btn" bindtap="getUserProfile">微信授权登录</button>
+</view>

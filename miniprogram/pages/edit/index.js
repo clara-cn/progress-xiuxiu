@@ -27,7 +27,6 @@ Page({
       this.setData({
         _id: options.id
       })
-      console.log(this.data._id)
       const db = await getApp().database()
       // 根据待办 _id 加载信息
       db.collection(getApp().globalData.collection).where({
@@ -35,7 +34,6 @@ Page({
       }).get().then(res => {
         // 解包获得 todo 对象
         const { data: [todo] } = res
-        console.log(todo.title)
         // 循环拼接展示的文件列表名，文件名过长时截断
         // let fileName = ''
         // for (let file of todo.files) {
@@ -60,9 +58,9 @@ Page({
           leader: todo.leader,
           leaderName: todo.leaderName
         })
-        console.log(this.data.staffNames)
       })
     }
+    console.log(this.data.leader)
   },
 
   async fetchUsers() {
@@ -201,7 +199,7 @@ Page({
       })
       return
     }
-    if (this.data.title.length > 10) {
+    if (this.data.title.length > 20) {
       wx.showToast({
         title: '事项标题过长',
         icon: 'error',

@@ -29,7 +29,6 @@ Page({
       const res = await db.collection("user").get();
       const realNames = res.data.map(user => user.real_name);
 
-      console.log(realNames)
       this.setData({
         users: res.data,    // Array of user objects (with _id and user_name)
         realNames: realNames 
@@ -157,11 +156,8 @@ Page({
       })
       return
     }
-
     const db = wx.cloud.database();
 
-    console.log(this.data.staffNames)
-    // 在数据库中新建待办事项，并填入已编辑信息
     db.collection(getApp().globalData.collection).add({
       data: {
         title: this.data.title,       // 待办标题

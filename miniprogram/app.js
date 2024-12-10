@@ -12,7 +12,11 @@ App({
       openid: null,
       realName: '',
       todoNum: 0,
+      todoFinishedNum: 0,
+      manageTodoNum: 0,
       responNum: 0,
+      user_id: '',
+      user_avatarUrl: '',
     };
 
     this.eventBus = {};
@@ -25,34 +29,47 @@ App({
       callbacks.forEach(callback => callback(data));
     };
 
+    const db = wx.cloud.database();
+    await this.getUserOpenID(); 
+    const res = await db.collection('user').where({
+      _openid: this.globalData.openid, // Check if user exists in the database
+    }).get();
+
+
     const isFirstTime = wx.getStorageSync('isFirstTime');
 
-    if (!isFirstTime) {
-      console.log("User first time in app");
-      const db = wx.cloud.database();
-      db.collection(getApp().globalData.collection).add({
+    if (res.data.length === 0) {
+      console.log("First time user detected");
+
+      await db.collection('user').add({
         data: {
-          title: this.data.title,
-          desc: this.data.desc,
-          freq: Number(this.data.freq),
-          star: false
-        }
-      }).then(() => {
-        wx.navigateBack({
-          delta: 0,
-        });
-      }).catch(err => {
-        console.error('添加数据失败:', err);
+          _openid: this.globalData.openid,
+          user_name: '',
+          avatarUrl: '',
+          createdAt: new Date(),
+        },
       });
+      // db.collection(getApp().globalData.collection).add({
+      //   data: {
+      //     title: this.data.title,
+      //     desc: this.data.desc,
+      //     freq: Number(this.data.freq),
+      //     star: false
+      //   }
+      // }).then(() => {
+      //   wx.navigateBack({
+      //     delta: 0,
+      //   });
+      // }).catch(err => {
+      //   console.error('添加数据失败:', err);
+      // });
       this.globalData.isFirstTime = true;
       wx.setStorageSync('isFirstTime', true);
     } else {
       console.log("User already visited");
       this.globalData.isFirstTime = false;
-      // this.globalData.isFirstTime = true;
     }
 
-    await this.getUserOpenID(); 
   },
 
   setUserInfo(userInfo) {
@@ -63,9 +80,6 @@ App({
 
   flag: false,
 
-  /**
-   * 初始化云开发环境（支持环境共享和正常两种模式）
-   */
   async initcloud() {
     const shareinfo = wx.getExtConfigSync();
     const normalinfo = require('./envList.js').envList || [];

@@ -1,9 +1,15 @@
+const { privacyPolicyText } = require('../../components/privacyPolicy');
+const { userAgreementText } = require('../../components/userAgreement');
+
 Page({
   data: {
     userInfo: null,  // 存储用户信息
     hasUserInfo: false,  // 用于判断是否已经获取用户信息
-    avatarUrl: '',
+    // avatarUrl: "https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0",
+    avatarUrl: "../../images/account/profile2.PNG",
     realName: '',
+    todoNum: 0,
+    todoFinishedNum: 0,
   },
 
   onLoad() {
@@ -11,99 +17,35 @@ Page({
     app.on('userInfoUpdated', (userInfo) => {
       this.setData({ userInfo, hasUserInfo: true, avatarUrl: '', realName: '' });
     });
+    this.setData({
+      todoNum: app.globalData.todoNum,
+      todoFinishedNum: app.globalData.todoFinishedNum,
+      manageTodoNum: app.globalData.manageTodoNum
+    })
+    console.log(this.data.hasUserInfo)
 
     if (app.globalData.userInfo) {
-      console.log(app.globalData.realName)
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true,
-        avatarUrl: app.globalData.userInfo.avatarUrl,
+        avatarUrl: app.globalData.user_avatarUrl,
         realName: app.globalData.realName,
       });
     }
   },
 
-  async getUserProfile() {  // Make the function itself async
-    wx.getUserProfile({
-      desc: '用于完善个人资料',  // Prompt explaining the need for user info
-      success: async (res) => {  // Make the success handler async
-        console.log('用户信息：', res);
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true,
-          avatarUrl: res.userInfo.avatarUrl
-        });
-        console.log(this.data.realName)
-
-        const db = wx.cloud.database();
-        const app = getApp();
-        try {
-          const user_db = await db.collection('user').where({
-            _id: app.globalData.openid
-          }).get();
-  
-          if (user_db.data.length === 0) {
-            await db.collection(app.globalData.user_db).add({
-              data: {
-                _id: app.globalData.openid,
-                user_name: res.userInfo.nickName,
-                avatarUrl: res.userInfo.avatarUrl,
-                user_role: 'user'
-              }
-            }).then(result => {
-              console.log("Document added successfully, _id:", result._id);
-              this.setData({
-                _id: result._id, // Store the _id in the page's data if needed
-              });
-            });
-            if (app.globalData.isFirstTime || !res.userInfo.real_name) {
-              this.checkAdditionalInfo()
-            } else {
-              app.globalData.realName = res.userInfo.real_name;
-            }
-            console.log('用户信息已添加');
-            // wx.navigateBack({ delta: 1 });
-          }
-        } catch (err) {
-          console.error('数据库查询或添加数据失败:', err);
-        }
-        wx.setStorageSync('userInfo', res.userInfo);
-        app.globalData.userInfo = res.userInfo;
-        app.emit('userInfoUpdated', res.userInfo);
-      },
-      fail: (err) => {
-        console.log('获取用户信息失败', err);
-      }
-    });
+  onShow() {
+    if (this.data.hasUserInfo === false) {
+      wx.navigateTo({
+        url: '../../pages/login/index',
+      })
+    }
   },
 
-  
-  checkAdditionalInfo() {
-    wx.showModal({
-      title: '欢迎来到进度咻咻',
-      content: '',
-      editable: true,
-      placeholderText: '输入您的姓名',
-      success: async (res) => {
-        if (res.confirm && res.content) {
-          this.setData({
-            realName: res.content,
-          })
-          const db = wx.cloud.database();
-          const app = getApp();
-
-          await db.collection(app.globalData.user_db).where({
-            _id: this.data._id
-          }).update({
-            data: {
-              real_name: this.data.realName,
-            }
-          })
-        } else {
-          console.log("User canceled or did not enter a name");
-        }
-      },
-    });
+  getUserProfile() {  // Make the function itself async
+    wx.navigateTo({
+      url: '../../pages/login/index',
+    })
   },
 
   showEditModal() {
@@ -119,14 +61,17 @@ Page({
           const app = getApp();
           if (newInput) {
             this.setData({
-              nickName: newInput
+              realName: newInput
             });
+            console.log(app.globalData.user_id, newInput, this.data.realName)
             db.collection('user').where({
-              _id: this.data._id
+              _id: app.globalData.user_id
             }).update({
-              real_name: this.data.realName
+              data: {
+                real_name: newInput
+              }
             })
-            app.globalData.realName = this.data.realName;
+            app.globalData.realName = newInput;
             wx.showToast({
               title: '昵称已修改',
               icon: 'success',
@@ -151,10 +96,69 @@ Page({
   },
 
   onChooseAvatar(e) {
-    console.log("OHHH")
-    const { avatarUrl } = e.detail 
-    this.setData({
-      avatarUrl,
+    const { avatarUrl } = e.detail
+    const db = wx.cloud.database();
+    const app = getApp()
+
+    wx.cloud.uploadFile({
+      cloudPath: `avatars/${app.globalData.user_id}-${new Date().getTime()}-${Math.random() * 100}.jpg`,
+      filePath: avatarUrl,
+      success: async (res) => {
+
+        try {
+          await db.collection('user').doc(app.globalData.user_id).update({
+            data: {
+              avatarUrl: res.fileID,
+            },
+          });
+
+          this.setData({
+            avatarUrl: res.fileID,
+          });
+
+          app.globalData.avatarUrl = res.fileID;
+          wx.showToast({
+            title: 'Avatar updated successfully!',
+            icon: 'success',
+          });
+        } catch (err) {
+          console.error('Failed to update avatar in database:', err);
+          wx.showToast({
+            title: 'Failed to update avatar!',
+            icon: 'none',
+          });
+        }
+      },
+      fail: (err) => {
+        console.error('Failed to upload avatar to cloud:', err);
+        wx.showToast({
+          title: 'Upload failed!',
+          icon: 'none',
+        });
+      },
+      complete: () => {
+        wx.hideLoading(); // Hide the loading indicator
+      },
     })
-  }
+  },
+
+  showPrivacyPolicy() {
+    wx.showModal({
+      title: '隐私政策',
+      content: privacyPolicyText,
+      showCancel: false, // 不显示取消按钮
+      confirmText: '关闭',
+      confirmColor: '#353535',
+    });
+  },
+
+  showUserAgreement() {
+    wx.showModal({
+      title: '用户协议',
+      content: userAgreementText,
+      showCancel: false, // 不显示取消按钮
+      confirmText: '关闭',
+      confirmColor: '#353535',
+    });
+  },
 });

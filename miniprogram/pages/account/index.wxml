@@ -1,18 +1,34 @@
-<view class="container">
-  <view class="user_container" wx:if="{{hasUserInfo}}" >
+<!-- <view wx:if="{{!hasUserInfo}}">
+  <button class="get-userinfo-btn" bindtap="getUserProfile">获取用户信息</button>
+</view> -->wx:else
+<view  class="container">
+  <view class="user_container">
     <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
       <image class="avatar" src="{{avatarUrl}}" mode="cover"></image>
     </button>
     <view>
-      <text class="nickname">{{realName}}</text>
+      <text class="nickname">Hi，{{realName}}</text>
       <image class="edit-icon" src="../../images/account/edit.png" bindtap="showEditModal" />
     </view>
   </view>
 
-  <view wx:else>
-    <button class="get-userinfo-btn" bindtap="getUserProfile">获取用户信息</button>
+  <view class="user_achieve">
+    <view class="achieve_container">
+      <text class="achieve_title">待做</text>
+      <text class="achieve_num">{{ todoNum }}</text>
+    </view>
+    <view class="achieve_container">
+      <text class="achieve_title">已完成</text>
+      <text class="achieve_num">{{ todoFinishedNum }}</text>
+    </view>
+    <view class="achieve_container">
+      <text class="achieve_title">监管项目</text>
+      <text class="achieve_num">{{ manageTodoNum }}</text>
+    </view>
   </view>
-  <view class="number_conclusion">
 
+  <view class="user_fonctions">
+    <button class="full_width_btn" bindtap="showPrivacyPolicy">隐私政策</button>
+    <button class="full_width_btn" bindtap="showUserAgreement">用户协议</button>
   </view>
 </view>

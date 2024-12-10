@@ -51,7 +51,7 @@ Page({
     const openid = await app.getOpenId();
 
     db.collection(app.globalData.collection).where({
-      _openid: openid
+      leader: openid
     }).get().then(res => {
       const { data } = res;
       app.globalData.todoNum = res.data.length;
@@ -71,8 +71,7 @@ Page({
         pending: todosWithDaysLeft.filter(todo => todo.freq === 0),
         finished: todosWithDaysLeft.filter(todo => todo.freq === 1)
       });
-      app.globalData.todoNum = todosWithDaysLeft.filter(todo => todo.freq === 0).length
-      app.globalData.todoFinishedNum = todosWithDaysLeft.filter(todo => todo.freq === 1).length
+      app.globalData.manageTodoNum = todosWithDaysLeft.filter(todo => todo.freq === 0).length
     }).catch(error => {
       console.error("Failed to fetch todos:", error);
     }); 
@@ -84,7 +83,6 @@ Page({
     })
   },
 
-  // 响应左划按钮事件
   async slideButtonTap(e) {
     const { index } = e.currentTarget.dataset;
     const itemId = this.data.pending[index]._id;

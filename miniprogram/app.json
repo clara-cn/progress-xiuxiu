@@ -6,28 +6,36 @@
     "pages/edit/index",
     "pages/detail/index",
     "pages/account/index",
-    "pages/account_detail/index"
+    "pages/login/index",
+    "pages/manage_list/index"
   ],
   "tabBar": {
     "color": "#00000",
-    "selectedColor": "#3cc51f",
+    "selectedColor": "#90B9DC",
     "backgroundColor": "#fffff",
     "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/list/index",
-        "text": "项目列表",
-        "iconPath": "images/tabbar/list-icon.png",
-        "selectedIconPath": "images/tabbar/list-icon.png"
+        "text": "待做列表",
+        "iconPath": "images/tabbar/check.png",
+        "selectedIconPath": "images/logo.png"
+      },
+      {
+        "pagePath": "pages/manage_list/index",
+        "text": "监管项目",
+        "iconPath": "images/tabbar/profile.png",
+        "selectedIconPath": "images/tabbar/profile1.png"
       },
       {
         "pagePath": "pages/account/index",
         "text": "我的账号",
-        "iconPath": "images/tabbar/user-icon.png",
-        "selectedIconPath": "images/tabbar/user-icon.png"
+        "iconPath": "images/tabbar/setting.png",
+        "selectedIconPath": "images/tabbar/setting1.png"
       }
     ]
   },
+
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",

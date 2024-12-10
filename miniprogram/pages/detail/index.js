@@ -43,10 +43,11 @@ Page({
 
   onTaskInput(e) {
     this.setData({ newTask: e.detail.value });
-    console.log(tasks)
   },
 
-  addTask() {
+  async addTask() {
+    const db = await getApp().database()
+
     wx.showModal({
       title: '添加任务',
       content: '',
@@ -60,8 +61,13 @@ Page({
             this.setData({
               tasks: [...this.data.tasks, { name: newTaskName, done: false }]
             });
-            console.log(this.data.tasks)
-            // Show a success toast
+            db.collection(getApp().globalData.collection).where({
+              _id: this.data._id
+            }).update({
+              data: {
+                tasks: this.data.tasks
+              }
+            })
             wx.showToast({
               title: '任务已添加',
               icon: 'success',
