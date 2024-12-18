@@ -1,0 +1,9 @@
+{
+  "triggers": [
+    {
+      "name": "notificationMessageTrigger",
+      "type": "timer",
+      "config": "25 16 * * *"
+    }
+  ]
+}

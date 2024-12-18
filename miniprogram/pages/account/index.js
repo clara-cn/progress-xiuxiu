@@ -161,4 +161,21 @@ Page({
       confirmColor: '#353535',
     });
   },
+
+  subscribeApp() {
+    wx.requestSubscribeMessage({
+      tmplIds: ['6p-rfJ78msYIIadvTNsXKLza4tXd-bnFNqxw4LWZ8xo'],
+      success(res) {
+        if (res['6p-rfJ78msYIIadvTNsXKLza4tXd-bnFNqxw4LWZ8xo'] === 'accept') {
+          console.log('User accepted subscription');
+        } else {
+          console.log('User denied subscription');
+        }
+      },
+      fail(err) {
+        console.error('Subscription request failed:', err);
+      }
+    });
+    
+  }
 });

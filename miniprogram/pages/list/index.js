@@ -75,7 +75,7 @@ Page({
       app.globalData.todoFinishedNum = todosWithDaysLeft.filter(todo => todo.freq === 1).length
     }).catch(error => {
       console.error("Failed to fetch todos:", error);
-    }); 
+    });
   },
 
   getUserProfile() {

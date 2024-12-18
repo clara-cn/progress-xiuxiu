@@ -1,7 +1,7 @@
-<!-- <view wx:if="{{!hasUserInfo}}">
+<view wx:if="{{!hasUserInfo}}">
   <button class="get-userinfo-btn" bindtap="getUserProfile">获取用户信息</button>
-</view> -->wx:else
-<view  class="container">
+</view>
+<view wx:else class="container">
   <view class="user_container">
     <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
       <image class="avatar" src="{{avatarUrl}}" mode="cover"></image>
@@ -30,5 +30,6 @@
   <view class="user_fonctions">
     <button class="full_width_btn" bindtap="showPrivacyPolicy">隐私政策</button>
     <button class="full_width_btn" bindtap="showUserAgreement">用户协议</button>
+    <button class="full_width_btn" bindtap="subscribeApp">订阅消息</button>
   </view>
 </view>
