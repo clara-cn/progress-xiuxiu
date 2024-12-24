@@ -6,9 +6,9 @@
     <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
       <image class="avatar" src="{{avatarUrl}}" mode="cover"></image>
     </button>
-    <view>
-      <text class="nickname">Hi，{{realName}}</text>
-      <image class="edit-icon" src="../../images/account/edit.png" bindtap="showEditModal" />
+    <view bindtap="showEditModal">
+      <text class="nickname">Hi，{{realName}} </text>
+      <image class="edit-icon" src="../../images/account/edit.png" />
     </view>
   </view>
 

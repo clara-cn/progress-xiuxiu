@@ -28,7 +28,7 @@ Page({
     }
   },
 
-  async getUserProfile() {  // Make the function itself async
+  async getUserProfile() {
     if (!this.data.isChecked) {
       wx.showToast({
         title: '请同意隐私协议和用户协议',
@@ -65,13 +65,14 @@ Page({
               app.globalData.user_id = result._id
             });
           }
-          if (app.globalData.isFirstTime || !res.userInfo.real_name) {
+
+          if (app.globalData.isFirstTime || res.userInfo.real_name === undefined) {
             this.checkAdditionalInfo()
           } else {
             app.globalData.realName = user_db.data[0].real_name;
-            app.globalData.user_id = user_db.data[0]._id;
-            app.globalData.user_avatarUrl = user_db.data[0].avatarUrl;
           }
+          app.globalData.user_id = user_db.data[0]._id;
+          app.globalData.user_avatarUrl = user_db.data[0].avatarUrl;
           console.log("GLOBAL", app.globalData)
           wx.reLaunch({
             url: '../../pages/list/index',

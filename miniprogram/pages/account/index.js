@@ -3,8 +3,8 @@ const { userAgreementText } = require('../../components/userAgreement');
 
 Page({
   data: {
-    userInfo: null,  // 存储用户信息
-    hasUserInfo: false,  // 用于判断是否已经获取用户信息
+    userInfo: null,
+    hasUserInfo: false,
     // avatarUrl: "https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0",
     avatarUrl: "../../images/account/profile2.PNG",
     realName: '',
@@ -15,7 +15,7 @@ Page({
   onLoad() {
     const app = getApp();
     app.on('userInfoUpdated', (userInfo) => {
-      this.setData({ userInfo, hasUserInfo: true, avatarUrl: '', realName: '' });
+      this.setData({ userInfo, hasUserInfo: true, avatarUrl: '../../images/account/profile2.PNG', realName: '' });
     });
     this.setData({
       todoNum: app.globalData.todoNum,
