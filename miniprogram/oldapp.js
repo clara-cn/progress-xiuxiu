@@ -8,12 +8,10 @@ App({
       collection: 'todo',
       user_db: 'user',
       fileLimit: 2,
-      isFirstTime: false,
+      isFirstTime: false,  // 记录用户是否第一次进入小程序
       openid: null,
       realName: '',
       todoNum: 0,
-      todoFinishedNum: 0,
-      manageTodoNum: 0,
       responNum: 0,
       user_id: '',
       user_avatarUrl: '',
@@ -29,33 +27,34 @@ App({
       callbacks.forEach(callback => callback(data));
     };
 
-    const db = wx.cloud.database();
-    await this.getUserOpenID(); 
-    const res = await db.collection('user').where({
-      _openid: this.globalData.openid, // Check if user exists in the database
-    }).get();
-
-
     const isFirstTime = wx.getStorageSync('isFirstTime');
 
-    if (res.data.length === 0 && !isFirstTime) {
-      console.log("First time user detected");
-
-      await db.collection('user').add({
+    if (!isFirstTime) {
+      console.log("User first time in app");
+      const db = wx.cloud.database();
+      db.collection(getApp().globalData.collection).add({
         data: {
-          _openid: this.globalData.openid,
-          user_name: '',
-          avatarUrl: '',
-          createdAt: new Date(),
-        },
+          title: this.data.title,
+          desc: this.data.desc,
+          freq: Number(this.data.freq),
+          star: false
+        }
+      }).then(() => {
+        wx.navigateBack({
+          delta: 0,
+        });
+      }).catch(err => {
+        console.error('添加数据失败:', err);
       });
       this.globalData.isFirstTime = true;
       wx.setStorageSync('isFirstTime', true);
     } else {
       console.log("User already visited");
       this.globalData.isFirstTime = false;
+      // this.globalData.isFirstTime = true;
     }
 
+    await this.getUserOpenID(); 
   },
 
   setUserInfo(userInfo) {
@@ -66,6 +65,9 @@ App({
 
   flag: false,
 
+  /**
+   * 初始化云开发环境（支持环境共享和正常两种模式）
+   */
   async initcloud() {
     const shareinfo = wx.getExtConfigSync();
     const normalinfo = require('./envList.js').envList || [];
@@ -108,7 +110,7 @@ App({
     try {
         const res = await wx.cloud.callFunction({ name: 'login' });
         console.log('用户 openID:', res.result.openid);
-        this.globalData.openid = res.result.openid;
+        this.globalData.openid = res.result.openid;  // Store openID in global data
     } catch (err) {
         console.error('调用云函数失败:', err);
     }

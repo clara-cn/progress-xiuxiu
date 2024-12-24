@@ -118,21 +118,19 @@ Page({
 
           app.globalData.avatarUrl = res.fileID;
           wx.showToast({
-            title: 'Avatar updated successfully!',
+            title: '头像上传成功',
             icon: 'success',
           });
         } catch (err) {
-          console.error('Failed to update avatar in database:', err);
           wx.showToast({
-            title: 'Failed to update avatar!',
+            title: '上传失败，请再次尝试',
             icon: 'none',
           });
         }
       },
       fail: (err) => {
-        console.error('Failed to upload avatar to cloud:', err);
         wx.showToast({
-          title: 'Upload failed!',
+          title: '上传失败，请再次尝试',
           icon: 'none',
         });
       },
@@ -163,10 +161,12 @@ Page({
   },
 
   subscribeApp() {
+    const normalinfo = require('./envList.js').envList || [];
+
     wx.requestSubscribeMessage({
-      tmplIds: ['6p-rfJ78msYIIadvTNsXKLza4tXd-bnFNqxw4LWZ8xo'],
+      tmplIds: [normalinfo[0].templateId],
       success(res) {
-        if (res['6p-rfJ78msYIIadvTNsXKLza4tXd-bnFNqxw4LWZ8xo'] === 'accept') {
+        if (res[normalinfo[0].templateId] === 'accept') {
           console.log('User accepted subscription');
         } else {
           console.log('User denied subscription');

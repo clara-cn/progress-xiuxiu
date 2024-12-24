@@ -5,9 +5,11 @@ exports.main = async (event) => {
   const db = cloud.database();
   const _ = db.command;
   const wxContext = cloud.getWXContext();
-  const openid = wxContext.OPENID;
+  const openid = wxContext.OPENID || 'DEFAULT_OPENID_FOR_DEBUG';
 
-  const isTriggeredByTimer = wxContext.SOURCE === 'wx_client';
+  console.log("Retrieved OpenID:", openid);
+  console.log("Trigger Source:", wxContext.SOURCE);
+  const isTriggeredByTimer = wxContext.SOURCE === 'wx_trigger';
 
   function truncateString(str, maxLength) {
     return str.length > maxLength ? str.substring(0, maxLength) : str;
@@ -20,6 +22,7 @@ exports.main = async (event) => {
   }
 
   try {
+    console.log("Trigger", isTriggeredByTimer)
     if (isTriggeredByTimer) {
       const res = await db.collection('todo').where({
         _openid: openid
@@ -36,15 +39,14 @@ exports.main = async (event) => {
       });
   
       const todoNum = todosWithDaysLeft.filter(todo => todo.freq === 0).length;
-      const messages = [{
-        openid: openid,
-        projectName: "进度咻咻-项目跟进",
-        deadlineDate: new Date().toISOString().slice(0, 10),
-        description: truncateString(`请及时更新本周您的项目进度，目前有${todoNum}个未完成项目`, 20)
-      }];
+      if (todoNum > 0) {
+        const message = {
+          openid: openid,
+          projectName: "进度咻咻-项目跟进",
+          deadlineDate: new Date().toISOString().slice(0, 10),
+          description: truncateString(`请及时更新项目进度，目前有${todoNum}个未完成项目`, 20)
+        };
 
-      const results = [];
-      for (const message of messages) {
         const result = await cloud.openapi.subscribeMessage.send({
           touser: message.openid,
           templateId: '6p-rfJ78msYIIadvTNsXKLza4tXd-bnFNqxw4LWZ8xo',
@@ -56,9 +58,8 @@ exports.main = async (event) => {
             thing1: { value: message.description },
           },
         });
-        results.push(result);
+        return { success: true, result };
       }
-    return { success: true, results };
     } 
   } catch (error) {
     console.error('Error sending messages:', error);

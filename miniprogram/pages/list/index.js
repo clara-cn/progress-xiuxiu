@@ -54,7 +54,6 @@ Page({
       _openid: openid
     }).get().then(res => {
       const { data } = res;
-      app.globalData.todoNum = res.data.length;
 
       const todosWithDaysLeft = data.map(todo => {
         if (todo.deadlineDate) {
